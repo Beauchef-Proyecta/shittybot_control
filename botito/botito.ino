@@ -6,9 +6,10 @@ int abs_pos = 0; // initial position of server
 int val; // initial value of input
 #define INPUT_SIZE 30
 int stepPermm = 102; // steps aproximados por mm lineal recorrido
-float resto = 0.0;
+int resto = 0;
 
-// initialize the stepper library on pins 8 through 11
+// initialize the stepper library on pins 8,9,10,11 ; IN4,IN3,IN2,IN1
+
 Stepper myStepper(stepsPerRevolution, 8, 10, 9, 11);
 
 
@@ -35,19 +36,15 @@ void move_axis(int Id, int position) {
 
 void Goto(int position) {
   //Serial.println("Goto");
-
   while (resto > 0) {
     myStepper.step(-1);
     resto = resto - 1;
-
   }
   while (resto < 0) {
     myStepper.step(1);
     resto = resto + 1;
   }
-
 }
-
 
 void getmessage() {
 
@@ -84,17 +81,11 @@ void getmessage() {
   }
 }
 
-
-
-
-
 void setup() {
-  // nothing to do inside the setup
   pinMode(Lswitch, INPUT);
   Serial.begin(9600);
   myStepper.setSpeed(motorSpeed);
   home();
-
 }
 void loop() {
   getmessage();
