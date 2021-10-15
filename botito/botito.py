@@ -4,7 +4,7 @@ import time
 #BLOQUE SERIAL
 ser = serial
 try:
-    ser = serial.Serial("COM3", 9600, timeout=1) #ojito con la ruta
+    ser = serial.Serial("COM5", 9600, timeout=1) #ojito con la ruta
     serial_port = "Open"
     print("The port is available")
 
@@ -28,9 +28,9 @@ def stepper_go_home():
 while True:
     selector= input("home or X?: ")
     if selector=="X":
-        step_per_mm=102
+        step_per_mm=57
         Xval = int(input("X: "))
-        Xval_mm = int(Xval/step_per_mm)
-        stepper_go(Xval)
+        Xval_mm = int(Xval*step_per_mm)
+        stepper_go(Xval_mm)
     elif selector == "home":
         stepper_go_home()

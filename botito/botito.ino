@@ -8,7 +8,7 @@ int val; // initial value of input
 int stepPermm = 102; // steps aproximados por mm lineal recorrido
 int resto = 0;
 
-// initialize the stepper library on pins 8,9,10,11 ; IN4,IN3,IN2,IN1
+// initialize the stepper library on pins 8,9,10,11 ; IN1,IN2,IN3,IN4
 
 Stepper myStepper(stepsPerRevolution, 8, 10, 9, 11);
 
@@ -39,10 +39,17 @@ void Goto(int position) {
   while (resto > 0) {
     myStepper.step(-1);
     resto = resto - 1;
+    if (digitalRead(Lswitch) == HIGH) {
+      abs_pos = 0;
+    }
   }
   while (resto < 0) {
     myStepper.step(1);
     resto = resto + 1;
+    if (digitalRead(Lswitch) == HIGH) {
+      abs_pos = 0;
+    }
+
   }
 }
 
