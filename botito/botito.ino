@@ -1,9 +1,11 @@
 #include <Stepper.h>
+
 int motorSpeed = 16;
 int Lswitch = 7;
 int stepsPerRevolution = 2038;  // change this to fit the number of steps per revolution
 int abs_pos = 0; // initial position of server
 int val; // initial value of input
+
 #define INPUT_SIZE 30
 int stepPermm = 102; // steps aproximados por mm lineal recorrido
 int resto = 0;
@@ -12,11 +14,9 @@ int resto = 0;
 
 Stepper myStepper(stepsPerRevolution, 8, 10, 9, 11);
 
-
-
 void home() {
   while (digitalRead(Lswitch) == HIGH) {
-    myStepper.step(-1);
+    myStepper.step(1);
   }
   abs_pos = 0;
   //Serial.println("Tamos en 0");
@@ -37,14 +37,14 @@ void move_axis(int Id, int position) {
 void Goto(int position) {
   //Serial.println("Goto");
   while (resto > 0) {
-    myStepper.step(-1);
+    myStepper.step(1);
     resto = resto - 1;
     if (digitalRead(Lswitch) == HIGH) {
       abs_pos = 0;
     }
   }
   while (resto < 0) {
-    myStepper.step(1);
+    myStepper.step(-1);
     resto = resto + 1;
     if (digitalRead(Lswitch) == HIGH) {
       abs_pos = 0;
