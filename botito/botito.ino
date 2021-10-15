@@ -6,7 +6,7 @@ int abs_pos = 0; // initial position of server
 int val; // initial value of input
 #define INPUT_SIZE 30
 int stepPermm = 102; // steps aproximados por mm lineal recorrido
-float resto=0.0;
+float resto = 0.0;
 
 // initialize the stepper library on pins 8 through 11
 Stepper myStepper(stepsPerRevolution, 8, 10, 9, 11);
@@ -18,38 +18,34 @@ void home() {
     myStepper.step(-1);
   }
   abs_pos = 0;
-  Serial.println("Tamos en 0");
+  //Serial.println("Tamos en 0");
 }
 
 //move_axis function
 void move_axis(int Id, int position) {
   if (Id == 1) {
     resto = abs_pos - position ;
-    Goto(position);    
-    Serial.println("listo");
-    abs_pos= position;
+    Goto(position);
+    abs_pos = position;
+  }
+  if (Id == 2) {
+    home();
   }
 }
 
 void Goto(int position) {
-  Serial.println("Goto");
+  //Serial.println("Goto");
 
   while (resto > 0) {
     myStepper.step(-1);
-    resto= resto - 1;
+    resto = resto - 1;
 
   }
-  //if (pos_mm == poser) {
-  // Serial.println("at position");
-    
- // }
   while (resto < 0) {
     myStepper.step(1);
-    resto= resto + 1; 
-
+    resto = resto + 1;
   }
-  Serial.println("sali");
-  
+
 }
 
 
