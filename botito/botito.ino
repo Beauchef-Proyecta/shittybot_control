@@ -2,10 +2,11 @@
 int motorSpeed = 16;
 int Lswitch = 7;
 int stepsPerRevolution = 2038;  // change this to fit the number of steps per revolution
-int poser = 0; // initial position of server
+int abs_pos = 0; // initial position of server
 int val; // initial value of input
 #define INPUT_SIZE 30
-
+int stepPermm = 102; // steps aproximados por mm lineal recorrido
+float resto=0.0;
 
 // initialize the stepper library on pins 8 through 11
 Stepper myStepper(stepsPerRevolution, 8, 10, 9, 11);
@@ -16,33 +17,39 @@ void home() {
   while (digitalRead(Lswitch) == HIGH) {
     myStepper.step(-1);
   }
-  poser = 0;
-  Serial.print("Tamos en 0");
+  abs_pos = 0;
+  Serial.println("Tamos en 0");
 }
 
 //move_axis function
 void move_axis(int Id, int position) {
   if (Id == 1) {
-    Goto(position);
-    //delay(15);
+    resto = abs_pos - position ;
+    Goto(position);    
+    Serial.println("listo");
+    abs_pos= position;
   }
-
 }
 
 void Goto(int position) {
   Serial.println("Goto");
-  if (position > poser) {
+
+  while (resto > 0) {
     myStepper.step(-1);
-    poser = position;
+    resto= resto - 1;
+
   }
-  if (position == poser) {
-    Serial.println("at position");
-    poser = position;
+  //if (pos_mm == poser) {
+  // Serial.println("at position");
+    
+ // }
+  while (resto < 0) {
+    myStepper.step(1);
+    resto= resto + 1; 
+
   }
-  if (position < poser) {
-    myStepper.step(-1);
-    poser = position;
-  }
+  Serial.println("sali");
+  
 }
 
 
