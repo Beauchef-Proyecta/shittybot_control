@@ -28,7 +28,9 @@ def stepper_go_home():
 while True:
     selector= input("home or X?: ")
     if selector=="X":
+        step_per_mm=102
         Xval = int(input("X: "))
+        Xval_mm = int(Xval/step_per_mm)
         stepper_go(Xval)
     elif selector == "home":
         stepper_go_home()
