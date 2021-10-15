@@ -32,7 +32,7 @@ def stepper_go_home():
 
 def main():
     args = sys.argv[1:]
-    init_config(args[1])
+    init_config(args[0])
     while True:
         selector = input("home or X?: ")
         if selector == "X":
